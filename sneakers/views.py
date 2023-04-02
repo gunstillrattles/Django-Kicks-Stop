@@ -1,13 +1,39 @@
 from django.core.paginator import Paginator
 from django.shortcuts import render
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpResponse
 import json
 import datetime
+
+from django.views import View
+
+from .forms import LoginForm
 from .models import *
 from .utils import cookieCart, cartData, guestOrder
 from django.http import HttpResponseNotFound, HttpResponseForbidden, HttpResponseBadRequest
 from django.template import loader
 
+class LoginView(View):
+	form_class = LoginForm
+
+	def post(self, req, *args, **kwargs):
+		form = self.form_class(data=req.POST)
+
+		if form.is_valid():
+			pass
+		else:
+			return HttpResponse("The form is not valid!")
+	def	get(self,req,*args,**kwargs):
+		form = self.form_class()
+		return render(
+			req, "login.html",
+			{
+				"form": form,
+			},
+		)
+
+class LogoutView(View):
+	def	get(self,req,*args,**kwargs):
+		return HttpResponse("Logout view")
 
 def mainpage(request):
 	data = cartData(request)
