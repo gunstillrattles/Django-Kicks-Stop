@@ -38,7 +38,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'debug_toolbar',
-    'sneakers.apps.SneakersConfig'
+    'captcha',
+    'sneakers.apps.SneakersConfig',
 ]
 
 MIDDLEWARE = [

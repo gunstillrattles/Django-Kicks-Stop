@@ -1,5 +1,7 @@
+from django.contrib.auth import authenticate,login,logout
+from django.contrib.auth.models import AnonymousUser
 from django.core.paginator import Paginator
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.http import JsonResponse, HttpResponse
 import json
 import datetime
@@ -18,8 +20,18 @@ class LoginView(View):
 	def post(self, req, *args, **kwargs):
 		form = self.form_class(data=req.POST)
 
-		if form.is_valid():
-			pass
+		if form.is_valid(): 
+			username = form.cleaned_data["username"]
+			password = form.cleaned_data["password"]
+
+			user = authenticate(req, username=username, password=password,)
+
+			if user is not None:
+				login(req, user)
+				return redirect('mainpage')
+			else:
+				return HttpResponse("You couldn't login ")
+
 		else:
 			return HttpResponse("The form is not valid!")
 	def	get(self,req,*args,**kwargs):
@@ -33,7 +45,12 @@ class LoginView(View):
 
 class LogoutView(View):
 	def	get(self,req,*args,**kwargs):
-		return HttpResponse("Logout view")
+		user = req.user
+		if isinstance(user, AnonymousUser):
+			return HttpResponse("You haven't even logged in yet!")
+		else:
+			logout(req)
+			return redirect('mainpage')
 
 def mainpage(request):
 	data = cartData(request)
