@@ -2,14 +2,22 @@ from django.contrib.auth import authenticate,login,logout
 from django.contrib.auth.models import AnonymousUser
 from django.core.paginator import Paginator
 from django.shortcuts import render, redirect
+from django.forms import model_to_dict
 from django.http import JsonResponse, HttpResponse
 import json
 import datetime
+from rest_framework import generics, viewsets, mixins
+from rest_framework.decorators import action
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from rest_framework.viewsets import GenericViewSet
 
 from django.views import View
 
 from .forms import LoginForm
 from .models import *
+from .permissions import IsAdminOrReadOnly, IsOwnerOrReadOnly
+from .serializers import ProductSerializer
 from .utils import cookieCart, cartData, guestOrder
 from django.http import HttpResponseNotFound, HttpResponseForbidden, HttpResponseBadRequest
 from django.template import loader
@@ -166,3 +174,21 @@ def pageForbidden(request, exception):
     context = {}
     rendered_page = template.render(context, request)
     return HttpResponseForbidden(rendered_page)
+
+
+class SneakerAPIList(generics.ListCreateAPIView):
+    queryset = Product.objects.all()
+    serializer_class = ProductSerializer
+    # permission_classes = (IsAuthenticatedOrReadOnly, )
+
+
+class SneakerAPIUpdate(generics.RetrieveUpdateAPIView):
+    queryset = Product.objects.all()
+    serializer_class = ProductSerializer
+    permission_classes = (IsAdminOrReadOnly,)
+
+
+class SneakerAPIDestroy(generics.RetrieveDestroyAPIView):
+    queryset = Product.objects.all()
+    serializer_class = ProductSerializer
+    permission_classes = (IsAdminOrReadOnly, )

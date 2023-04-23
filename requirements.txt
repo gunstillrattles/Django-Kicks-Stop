@@ -21,3 +21,4 @@ urllib3==1.26.15
 yarg==0.1.9
 django-debug-toolbar~=3.8.1
 django-simple-captcha
+djangorestframework
