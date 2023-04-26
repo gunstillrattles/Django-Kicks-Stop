@@ -189,6 +189,9 @@ def pageForbidden(request, exception):
     rendered_page = template.render(context, request)
     return HttpResponseForbidden(rendered_page)
 
+def view(request):
+    return 0
+
 class SneakerAPIList(generics.ListCreateAPIView):
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
