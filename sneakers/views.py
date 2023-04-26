@@ -2,25 +2,24 @@ from django.contrib.auth import authenticate,login,logout
 from django.contrib.auth.models import AnonymousUser
 from django.core.paginator import Paginator
 from django.shortcuts import render, redirect
-from django.forms import model_to_dict
 from django.http import JsonResponse, HttpResponse
 import json
 import datetime
+from django.views import View
+from .forms import LoginForm, CreateUserForm
+from .models import *
+from .utils import cookieCart, cartData, guestOrder
+from django.http import HttpResponseNotFound, HttpResponseForbidden, HttpResponseBadRequest
+from django.template import loader
+from django.contrib import messages
+from django.forms import model_to_dict
 from rest_framework import generics, viewsets, mixins
 from rest_framework.decorators import action
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.viewsets import GenericViewSet
-
-from django.views import View
-
-from .forms import LoginForm
-from .models import *
 from .permissions import IsAdminOrReadOnly, IsOwnerOrReadOnly
 from .serializers import ProductSerializer
-from .utils import cookieCart, cartData, guestOrder
-from django.http import HttpResponseNotFound, HttpResponseForbidden, HttpResponseBadRequest
-from django.template import loader
 
 class LoginView(View):
 	form_class = LoginForm
@@ -28,7 +27,7 @@ class LoginView(View):
 	def post(self, req, *args, **kwargs):
 		form = self.form_class(data=req.POST)
 
-		if form.is_valid(): 
+		if form.is_valid():
 			username = form.cleaned_data["username"]
 			password = form.cleaned_data["password"]
 
@@ -59,6 +58,20 @@ class LogoutView(View):
 		else:
 			logout(req)
 			return redirect('mainpage')
+
+
+def registerPage(request):
+	form = CreateUserForm()
+
+	if request.method == 'POST':
+		form = CreateUserForm(request.POST)
+		if form.is_valid():
+			form.save()
+			messages.success(request, 'Account created')
+			return redirect('login')
+
+	context = {'form':form}
+	return render(request, 'register.html', context)
 
 def mainpage(request):
 	data = cartData(request)
@@ -148,6 +161,7 @@ def processOrder(request):
 		)
 
 	return JsonResponse('Payment submitted..', safe=False)
+
 def about(request):
     contact_list = Product.objects.all()
     paginator = Paginator(contact_list, 3)
@@ -155,8 +169,6 @@ def about(request):
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
     return render(request, 'about.html', {'page_obj': page_obj, 'title': 'О сайте'})
-
-
 def pageNotFound(request, exception):
     template = loader.get_template('404.html')
     context = {}
@@ -174,7 +186,6 @@ def pageForbidden(request, exception):
     context = {}
     rendered_page = template.render(context, request)
     return HttpResponseForbidden(rendered_page)
-
 
 class SneakerAPIList(generics.ListCreateAPIView):
     queryset = Product.objects.all()
