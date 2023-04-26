@@ -6,6 +6,7 @@ from django.http import JsonResponse, HttpResponse
 import json
 import datetime
 from django.views import View
+from django.contrib.auth.models import User
 from .forms import LoginForm, CreateUserForm
 from .models import *
 from .utils import cookieCart, cartData, guestOrder
@@ -66,7 +67,8 @@ def registerPage(request):
 	if request.method == 'POST':
 		form = CreateUserForm(request.POST)
 		if form.is_valid():
-			form.save()
+			user = form.save()
+			Customer.objects.create(user=user, name=user.username, email=user.email)
 			messages.success(request, 'Account created')
 			return redirect('login')
 
