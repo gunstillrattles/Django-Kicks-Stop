@@ -3,10 +3,11 @@
 <html>
 <head>
     <style>
-        body {
-            background-image: linear-gradient(red 30%, blue 70%);
+        .form_style {
+            position: absolute;
+            right: 0;
         }
-</style>
+    </style>
 	<title>KicksStop</title>
 
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1" />
@@ -65,27 +66,31 @@
 </head>
 <body>
 
-	<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-	  <a class="navbar-brand" href="{% url 'mainpage' %}">KicksStop</a>
-	  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-	    <span class="navbar-toggler-icon"></span>
-	  </button>
+	<nav class="nav-shadow">
+        <div class="form-inline my-2 my-lg-0">
+        <a href="{% url 'mainpage' %}"><img  id="brand-icon" src="/media/images/cooltext434418676976724.gif"></a>
+            <div class="form_style">
+                <buttontype="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                    <img  id="cart-icon" src="/media/images/1294844.svg">
+                </button>
+                <a href="{% url 'cart' %}">
+                    <img  id="cart-icon" src="{% static 'images/cart.png' %}">
+                </a>
+                <p id="cart-total">{{cartItems}}</p>
+            </div>
+        </div>
 
-	  <div class="collapse navbar-collapse" id="navbarSupportedContent">
-	    <ul class="navbar-nav mr-auto">
-	      <li class="nav-item active">
-	        <a class="nav-link" href="{% url 'about' %}">About <span class="sr-only">(current)</span></a>
-	      </li>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item active">
+                    <a class="nav-link" href="{% url 'about' %}">About <span class="sr-only">(current)</span></a>
+                </li>
 
 	    </ul>
 	    <div class="form-inline my-2 my-lg-0">
 	     	<a href="login"class="btn btn-success">Login</a>
             <a href="logout"class="btn btn-danger">Logout</a>
 
-	     	<a href="{% url 'cart' %}">
-	    		<img  id="cart-icon" src="{% static 'images/cart.png' %}">
-	    	</a>
-	    	<p id="cart-total">{{cartItems}}</p>
 
 	    </div>
 	  </div>
@@ -153,9 +158,12 @@
     </div>
     <div class="text-center p-3" style="background-color: rgb(0,0,0);">
         Creators:
-      <p><a class="text-white" href="https://github.com/ogkkk">ogk</a></p>
+      <p><a class="text-white" href="https://github.com/ogkkk">3.14</a></p>
         <p><a class="text-white" href="https://github.com/gunstillrattles">Marlen</a></p>
       <p><a class="text-white" href="https://www.youtube.com/watch?v=dQw4w9WgXcQ">Youtube</a></p>
+        Бета тестеры:
+        <p><a class="text-white">OB2908</a></p>
+        <p><a class="text-white">Daverick</a></p>
     </div>
   </footer>
 </div>
