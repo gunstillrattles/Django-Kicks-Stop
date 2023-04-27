@@ -194,7 +194,7 @@ def pageForbidden(request, exception):
 class SneakerAPIList(generics.ListCreateAPIView):
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
-    # permission_classes = (IsAuthenticatedOrReadOnly, )
+    permission_classes = (IsAdminOrReadOnly, )
 
 
 class SneakerAPIUpdate(generics.RetrieveUpdateAPIView):
