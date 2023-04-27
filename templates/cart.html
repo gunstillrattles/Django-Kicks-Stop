@@ -32,9 +32,9 @@
 				<div class="cart-row">
 					<div style="flex:2">
                         {% if item.product.image %}
-                            <img class="thumbnail" src="{{ item.product.image.url }}">
+                            <img class="cart-thumbnail" src="{{ item.product.image.url }}">
                         {% else %}
-                            <img class="thumbnail" src="/media/images/8.jpg">
+                            <img class="cart-thumbnail" src="/media/images/8.jpg">
                         {% endif %}
                     </div>
 					<div style="flex:2"><p>{{item.product.name}}</p></div>
