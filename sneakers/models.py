@@ -14,6 +14,7 @@ def imageURL(self):
 	except:
 		url = ''
 	return url
+
 class Customer(models.Model):
 	user = models.OneToOneField(User, null=True, blank=True, on_delete=models.CASCADE, verbose_name="Пользователь")
 	name = models.CharField(max_length=200, null=True, verbose_name="Имя пользователя")

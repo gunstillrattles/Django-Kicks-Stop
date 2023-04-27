@@ -136,6 +136,7 @@ def updateItem(request):
 	return JsonResponse('Item was added', safe=False)
 
 
+
 def processOrder(request):
 	transaction_id = datetime.datetime.now().timestamp()
 	data = json.loads(request.body)
@@ -189,9 +190,6 @@ def pageForbidden(request, exception):
     context = {}
     rendered_page = template.render(context, request)
     return HttpResponseForbidden(rendered_page)
-
-def view(request):
-    return 0
 
 class SneakerAPIList(generics.ListCreateAPIView):
     queryset = Product.objects.all()
