@@ -21,6 +21,7 @@ from rest_framework.response import Response
 from rest_framework.viewsets import GenericViewSet
 from .permissions import IsAdminOrReadOnly, IsOwnerOrReadOnly
 from .serializers import ProductSerializer
+from rest_framework.permissions import IsAuthenticated
 
 class LoginView(View):
 	form_class = LoginForm
@@ -200,7 +201,8 @@ class SneakerAPIList(generics.ListCreateAPIView):
 class SneakerAPIUpdate(generics.RetrieveUpdateAPIView):
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
-    permission_classes = (IsAdminOrReadOnly,)
+    permission_classes = (IsAuthenticated, )
+# authenticated_classes = (TokenAuthentication, )
 
 
 class SneakerAPIDestroy(generics.RetrieveDestroyAPIView):

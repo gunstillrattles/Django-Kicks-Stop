@@ -123,3 +123,15 @@ h1,h2,h3,h4,h5,h6{
 .hidden{
 	display: none!important;
 }
+
+.parent > div {
+              background: #eee;
+              float: left;
+              width: 23.5%;
+              margin-right: 2%;
+              padding: 10px;
+              border: 1px solid #ccc;
+              -webkit-box-sizing: border-box;
+              -moz-box-sizing: border-box;
+              box-sizing: border-box;
+          }
