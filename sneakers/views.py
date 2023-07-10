@@ -84,7 +84,7 @@ def mainpage(request):
 	items = data['items']
 
 	products = Product.objects.all()
-	paginator = Paginator(products, 4)
+	paginator = Paginator(products, 6)
 
 	page_number = request.GET.get('page')
 	page_obj = paginator.get_page(page_number)
@@ -171,13 +171,6 @@ def processOrder(request):
 
 	return JsonResponse('Payment submitted..', safe=False)
 
-def about(request):
-    contact_list = Product.objects.all()
-    paginator = Paginator(contact_list, 3)
-
-    page_number = request.GET.get('page')
-    page_obj = paginator.get_page(page_number)
-    return render(request, 'about.html', {'page_obj': page_obj, 'title': 'О сайте'})
 def pageNotFound(request, exception):
     template = loader.get_template('404.html')
     context = {}
